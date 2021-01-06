@@ -1,6 +1,5 @@
 import React, { useRef, useLayoutEffect, useState, useEffect } from 'react'
 import H from "@here/maps-api-for-javascript"
-import { render } from '@testing-library/react'
 
 const Map = (props) => {
   const mapRef = useRef(null)
@@ -17,6 +16,7 @@ const Map = (props) => {
     setPlatform(hPlatform)
 
     const defaultLayers = hPlatform.createDefaultLayers()
+
     const hMap = new H.Map(
       mapRef.current,
       defaultLayers.vector.normal.map,
@@ -83,7 +83,7 @@ const Map = (props) => {
   return (
     <>
       <div className="map" ref={mapRef} />
-      { map ? renderChildren() : "Loading…" }
+      { map ? renderChildren() : "Loading…"}
     </>
   )
 
