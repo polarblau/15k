@@ -24,7 +24,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "homepage": "http://polarblau.github.io/15k",
+  "homepage": "https://15k.polarblau.com",
   "eslintConfig": {
     "extends": [
       "react-app",
