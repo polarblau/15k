@@ -2,25 +2,18 @@ import { useState, useEffect } from 'react'
 import { Paper, TextField } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert'
 
-// import H from "@here/maps-api-for-javascript"
-
-
 
 const SearchForm = (props) => {
-  const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [warning, setWarning] = useState(null)
+  const [info, setInfo] = useState(null)
   const [address, setAddress] = useState('')
-  // props.onError
-  // props.onGeoCode
-  // props.coords ?
-  // props.address
 
   const handleSubmit = (evt) => {
     evt.preventDefault()
     const service = props.platform.getSearchService()
     service.geocode({ q: address }, 
       (data) => {
-        
         const result = data.items[0]
         if (!result) {
           setError('Nothing found for this input.')
@@ -44,6 +37,27 @@ const SearchForm = (props) => {
     setAddress(evt.target.value)
   }
 
+  useEffect(() => {
+    setWarning(null)
+    setInfo(null)
+    if (props.location.countyStatus == 'hotSpot') {
+      setWarning(`
+        The county of "${props.location.county}" has been declared a 
+        COVID-19 hotspot due to a 7 day incident value of 
+        ${Math.round(props.location.incidenceValue)} per 100.000 
+        inhabitants. You may not travel further than 15km from your home 
+        at this moment. (Last updated: ${props.location.updatedAt})
+      `)
+    } else if (props.location.incidenceValue) {
+      setInfo(`
+        The county of "${props.location.county}" has a 7 day incident value of 
+        ${Math.round(props.location.incidenceValue)} per 100.000 inhabitants
+        ${props.location.countyStatus == 'riskArea' ? ' and is considered a high risk area.' : '.'} 
+        (Last updated: ${props.location.updatedAt})
+      `)
+    }
+  }, [props.location])
+
   return (
     <Paper elevation={3} className="form">
       <form onSubmit={handleSubmit}>
@@ -56,7 +70,9 @@ const SearchForm = (props) => {
           error={!!error}
         />
       </form>
-      { error && <Alert severity="error">{error}</Alert> }
+      { warning && <Alert severity="warning" className="addendum">{warning}</Alert> }
+      { (error && !info) && <Alert severity="error" className="addendum">{error}</Alert> }
+      { (info && !warning) && <Alert severity="info" className="addendum">{info}</Alert> }
     </Paper>
   )
 }

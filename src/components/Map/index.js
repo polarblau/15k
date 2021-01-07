@@ -10,7 +10,7 @@ const Map = (props) => {
     if (!mapRef.current) return;
 
     const hPlatform = new H.service.Platform({
-      'apikey': 'mPpQR16YV3tZ3YpokLwD4hFCEpwCKJWXe9Q-wv4EXIU'
+      'apikey': props.apiKey
     })
 
     setPlatform(hPlatform)

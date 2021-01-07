@@ -20,7 +20,7 @@ const Isoline = (props) => {
   useEffect(() => {
     const router = props.platform.getRoutingService(null, 8)
     const params = {
-      start: `geo!${props.coords.lat},${props.coords.lng}`,
+      start: `geo!${props.location.coords.lat},${props.location.coords.lng}`,
       range: props.range,
       rangetype: props.rangeType || 'distance',
       mode: `shortest;${props.travelMode}`
@@ -36,7 +36,7 @@ const Isoline = (props) => {
       })
 
 
-  }, [props.coords, props.range, props.travelMode])
+  }, [props.location.coords, props.range, props.travelMode])
 
   useEffect(() => {
     if (!polyline) return
