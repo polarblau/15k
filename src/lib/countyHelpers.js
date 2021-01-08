@@ -41,7 +41,9 @@ const CountyHelper = (options) => {
     return fetch(COUNTY_INFO_ENDPOINT)
       .then(response => response.json())
       .then((data) => {
-        return prepCountyData(data)[county]
+        const countyData = prepCountyData(data)
+        let info = countyData[county]
+        return info
       })
   }
 

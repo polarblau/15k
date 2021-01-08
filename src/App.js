@@ -19,9 +19,10 @@ const coordsToHERECoords = (coords) => {
 
 const App = (props) => {
   const [location, setLocation] = useState({ coords: DEFAULT_COORDS })
-  const [getCounty, getCountyInfo] = CountyHelpers({ hereAPIKey: HERE_API_KEY })
   const [travelMode, setTravelMode] = useState('car')
   const [zoomBounds, setZoomBounds] = useState()
+
+  const [getCounty, getCountyInfo] = CountyHelpers({ hereAPIKey: HERE_API_KEY })
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -32,12 +33,12 @@ const App = (props) => {
   }, [])
 
   useEffect(() => {
-    if (location.coords && !location.county) {
+    if (location.coords && coordsSet() && !location.county) {
       getCounty(location.coords).then((county) => {
         setLocation({ ...location, county })
       }).catch(console.error)
     }
-    if (location.coords && location.county && !location.countyStatus) {
+    if (location.coords && location.county && coordsSet() && !location.countyStatus) {
       getCountyInfo(location.county).then((countyInfo) => {
         if (countyInfo) setLocation({ ...location, ...countyInfo })
       })

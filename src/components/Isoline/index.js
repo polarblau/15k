@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import H from "@here/maps-api-for-javascript"
 
+const API_PATH = "https://isoline.route.ls.hereapi.com/routing/7.2/calculateisoline.json?"
+
 const objToParams = (obj) => {
   let str = "";
   for (let key in obj) {
@@ -26,8 +28,7 @@ const Isoline = (props) => {
       mode: `shortest;${props.travelMode}`
     }
 
-    const apiPath = "https://isoline.route.ls.hereapi.com/routing/7.2/calculateisoline.json?"
-    fetch(apiPath + objToParams({ ...params, apikey: props.platform.a}))
+    fetch(API_PATH + objToParams({ ...params, apikey: props.platform.a}))
       .then(response => response.json())
       .then(({ response }) => {
         const latLngArray = response.isoline[0].component[0].shape
